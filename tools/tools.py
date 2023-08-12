@@ -39,6 +39,7 @@ class CustomSerpAPIWrapper(SerpAPIWrapper):
 
 def get_profile_url(name: str):
     """Searches for Linkedin or twitter Profile Page."""
+    # agent reads this doc string and decides if it is useful for its purpose or not
     search = CustomSerpAPIWrapper()
     res = search.run(f"{name}")
     return res
