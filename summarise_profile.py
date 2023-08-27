@@ -1,3 +1,5 @@
+from typing import Tuple
+
 from langchain import PromptTemplate
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import LLMChain
@@ -9,7 +11,8 @@ from agents.linkedin_lookup_agent import lookup as linkedin_lookup_agent
 from agents.twitter_lookup_agent import lookup as twitter_lookup_agent
 
 from output_parsers import (
-    person_intel_parser
+    person_intel_parser,
+    PersonIntel
 )
 
 # information = """ Elon Reeve Musk (/ˈiːlɒn/ EE-lon; born June 28, 1971) is a business magnate and investor. He is
@@ -41,10 +44,10 @@ from output_parsers import (
 name = "Ian Lo"
 
 
-def summarise_person(name: str) -> str:
+def summarise_person(name: str) -> Tuple[PersonIntel, str]:
     # linkedin_profile_url = linkedin_lookup_agent(name=name)
     # linkedin_data = scrape_linkedin_profile(linkedin_profile_url=linkedin_profile_url)
-    linkedin_data = scrape_linkedin_profile("https://gist.githubusercontent.com/ianlokh/9536ca2fe0b9e4595cda80a6f884f43c/raw/014dfc610d913104ef8befe22c9afc3bf86aa7b2/my_linkedin_profile.json")
+    linkedin_data = scrape_linkedin_profile("https://gist.githubusercontent.com/ianlokh/723a9ca7380920fd7dae9ffd3cd9b2de/raw/ab87f07908e68f52d6faabb6cc94996a509aaa88/my_linkedin_profile_v2.json")
 
     # twitter_username = twitter_lookup_agent(name=name)
     # tweets = scrape_user_tweets(username=twitter_username, num_tweets=100)
@@ -69,10 +72,9 @@ def summarise_person(name: str) -> str:
 
     result = chain.run(linkedin_information=linkedin_data, twitter_information=tweets)
     print(result)
-    return result
+    return person_intel_parser.parse(result), linkedin_data.get("profile_pic_url")
 
 
 if __name__ == "__main__":
     print("Hello LangChain")
-
     result = summarise_person(name=name)

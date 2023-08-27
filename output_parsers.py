@@ -17,9 +17,7 @@ class PersonIntel(BaseModel):
                 }
 
 
-person_intel_parser:PydanticOutputParser = PydanticOutputParser(pydantic_object=PersonIntel)
-
-
+person_intel_parser: PydanticOutputParser = PydanticOutputParser(pydantic_object=PersonIntel)
 
 # class Summary(BaseModel):
 #     summary: str = Field(description="summary")

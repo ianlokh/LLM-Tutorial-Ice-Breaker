@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <title>Ice Breaker</title>
+    <title>Profile Summary</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" />
     <div class="spinner-container" id="spinner-container" style="display: none;">
         <i id="loading-spinner" class="fas fa-spinner fa-spin"></i>
@@ -15,7 +15,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Ice Breaker</h1>
+        <h1>Summarise Profile</h1>
         <form id="name-form">
             <input type="text" id="name" name="name" placeholder="Enter name">
             <button id="magic-button" type="submit">Do Your Magic</button>
@@ -46,8 +46,8 @@
                         $('#profile-pic').show(); // Show the profile picture
                         $('#summary-and-facts').text(response.summary_and_facts.summary);
                         $('#interests').html('<ul>' + response.summary_and_facts.facts.map(fact => '<li>' + fact + '</li>').join('') + '</ul>');
-                        $('#ice-breakers').html('<ul>' + response.ice_breakers.ice_breakers.map(ice_breaker => '<li>' + ice_breaker + '</li>').join('') + '</ul>');
-                        $('#topics-of-interest').html('<ul>' + response.interests.ice_breakers.map(topic => '<li>' + topic + '</li>').join('') + '</ul>');
+                        $('#ice-breakers').html('<ul>' + response.ice_breakers.map(ice_breaker => '<li>' + ice_breaker + '</li>').join('') + '</ul>');
+                        $('#topics-of-interest').html('<ul>' + response.interests.map(topic => '<li>' + topic + '</li>').join('') + '</ul>');
                     },
                     error: function (error) {
                         console.log(error);
