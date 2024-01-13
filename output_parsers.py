@@ -4,10 +4,10 @@ from typing import List
 
 
 class PersonIntel(BaseModel):
-    summary: str = Field(description="Summary of the person")
-    facts: List[str] = Field(description="Interesting facts about the person")
-    topics_of_interest: List[str] = Field(description="Topics that may interest that interest that person")
-    ice_breakers: List[str] = Field(description="Icebreakers to open a conversation with that person")
+    summary: str #= Field(description="Summary of the person")
+    facts: List[str] #= Field(description="Interesting facts about the person")
+    topics_of_interest: List[str] #= Field(description="Topics that may interest that interest that person")
+    ice_breakers: List[str] #= Field(description="Icebreakers to open a conversation with that person")
 
     def to_dict(self):
         return {"summary": self.summary,

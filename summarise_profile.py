@@ -15,6 +15,8 @@ from output_parsers import (
     PersonIntel
 )
 
+from json_repair import repair_json
+
 # information = """ Elon Reeve Musk (/ˈiːlɒn/ EE-lon; born June 28, 1971) is a business magnate and investor. He is
 # the founder, CEO and chief engineer of SpaceX; angel investor, CEO and product architect of Tesla, Inc.; founder,
 # owner, CTO and chairman of X Corp. and Twitter; founder of the Boring Company; co-founder of Neuralink and OpenAI;
@@ -47,7 +49,8 @@ name = "Ian Lo"
 def summarise_person(name: str) -> Tuple[PersonIntel, str]:
     # linkedin_profile_url = linkedin_lookup_agent(name=name)
     # linkedin_data = scrape_linkedin_profile(linkedin_profile_url=linkedin_profile_url)
-    linkedin_data = scrape_linkedin_profile("https://gist.githubusercontent.com/ianlokh/723a9ca7380920fd7dae9ffd3cd9b2de/raw/ab87f07908e68f52d6faabb6cc94996a509aaa88/my_linkedin_profile_v2.json")
+    linkedin_data = scrape_linkedin_profile("https://gist.githubusercontent.com/ianlokh"
+                                            "/723a9ca7380920fd7dae9ffd3cd9b2de/raw/ab87f07908e68f52d6faabb6cc94996a509aaa88/my_linkedin_profile_v2.json")
 
     # twitter_username = twitter_lookup_agent(name=name)
     # tweets = scrape_user_tweets(username=twitter_username, num_tweets=100)
@@ -63,7 +66,8 @@ def summarise_person(name: str) -> Tuple[PersonIntel, str]:
     """
     summary_prompt_template = PromptTemplate(input_variables=["linkedin_information", "twitter_information"],
                                              template=summary_template,
-                                             partial_variables={"format_instructions":person_intel_parser.get_format_instructions()}
+                                             partial_variables={
+                                                 "format_instructions": person_intel_parser.get_format_instructions()}
                                              )
 
     llm = ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo")
@@ -71,6 +75,7 @@ def summarise_person(name: str) -> Tuple[PersonIntel, str]:
     chain = LLMChain(llm=llm, prompt=summary_prompt_template)
 
     result = chain.run(linkedin_information=linkedin_data, twitter_information=tweets)
+    result = repair_json(result)
     print(result)
     return person_intel_parser.parse(result), linkedin_data.get("profile_pic_url")
 
